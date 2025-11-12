@@ -1,0 +1,7 @@
+<form (ngSubmit)="onSubmit()">
+  <input type="text" [(ngModel)]="nuevaBebida.nombre" name="nombre" placeholder="Nombre" required />
+  <input type="text" [(ngModel)]="nuevaBebida.descripcion" name="descripcion" placeholder="Descripción" />
+  <input type="number" [(ngModel)]="nuevaBebida.precio" name="precio" placeholder="Precio" required />
+  <label><input type="checkbox" [(ngModel)]="nuevaBebida.disponible" name="disponible" /> Disponible</label>
+  <button type="submit">Agregar</button>
+</form>
