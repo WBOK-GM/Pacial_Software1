@@ -1,5 +1,12 @@
-.bebida-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.bebidas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .bebidas-grid {
+    grid-template-columns: 1fr;
+  }
 }

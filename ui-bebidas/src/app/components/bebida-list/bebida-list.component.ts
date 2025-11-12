@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BebidaCardComponent } from '../bebida-card/bebida-card.component';
+import { BebidaService } from '../../services/bebida.service';
+import { Bebida } from '../../models/bebida.model';
 
 @Component({
   selector: 'app-bebida-list',
@@ -9,9 +11,36 @@ import { BebidaCardComponent } from '../bebida-card/bebida-card.component';
   templateUrl: './bebida-list.component.html',
   styleUrls: ['./bebida-list.component.css']
 })
-export class BebidaListComponent {
-  bebidas = [
-    { nombre: 'Coca-Cola', precio: 3000, disponible: true },
-    { nombre: 'Jugo de Naranja', precio: 2500, disponible: false },
-  ];
+export class BebidaListComponent implements OnInit {
+  bebidas: Bebida[] = [];
+
+  constructor(private bebidaService: BebidaService) {}
+
+  ngOnInit(): void {
+    this.loadBebidas();
+  }
+
+  loadBebidas(): void {
+    this.bebidaService.getBebidas().subscribe({
+      next: (data) => {
+        this.bebidas = data;
+      },
+      error: (error) => {
+        console.error('Error cargando bebidas:', error);
+      }
+    });
+  }
+
+  deleteBebida(id: number): void {
+    if (confirm('¿Estás seguro de eliminar esta bebida?')) {
+      this.bebidaService.deleteBebida(id).subscribe({
+        next: () => {
+          this.bebidas = this.bebidas.filter(b => b.id !== id);
+        },
+        error: (error) => {
+          console.error('Error eliminando bebida:', error);
+        }
+      });
+    }
+  }
 }

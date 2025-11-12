@@ -1,3 +1,7 @@
-<div *ngFor="let bebida of bebidas">
-  <app-bebida-card [bebida]="bebida"></app-bebida-card>
+<div class="bebidas-grid">
+  <app-bebida-card 
+    *ngFor="let bebida of bebidas" 
+    [bebida]="bebida"
+    (onDelete)="deleteBebida($event)">
+  </app-bebida-card>
 </div>

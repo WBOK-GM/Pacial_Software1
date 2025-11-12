@@ -1,6 +1,26 @@
-<div class="bebida-card">
-  <h3>{{ bebida.nombre }}</h3>
-  <p>{{ bebida.descripcion }}</p>
-  <span>Precio: {{ bebida.precio | currency }}</span>
-  <span *ngIf="!bebida.disponible">No disponible</span>
+<div class="card">
+  <div class="card-icon">
+    <span class="icon">{{ getIcon() }}</span>
+  </div>
+  
+  <span class="badge" [class.disponible]="bebida.disponible">
+    <span class="checkmark" *ngIf="bebida.disponible">✓</span>
+    {{ bebida.disponible ? 'Disponible' : 'No disponible' }}
+  </span>
+
+  <div class="card-content">
+    <h3>{{ bebida.nombre }}</h3>
+    <p class="description">{{ bebida.descripcion }}</p>
+    
+    <div class="card-footer">
+      <div class="price-section">
+        <span class="price-label">Precio</span>
+        <span class="price">{{ bebida.precio | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+      
+      <button class="btn-delete" (click)="onDeleteClick()">
+        <span class="trash-icon">🗑</span> Eliminar
+      </button>
+    </div>
+  </div>
 </div>
