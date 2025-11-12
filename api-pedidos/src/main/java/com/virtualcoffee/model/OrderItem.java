@@ -1,9 +1,12 @@
 package com.virtualcoffee.model;
 
 import jakarta.persistence.Embeddable;
+<<<<<<< HEAD
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+=======
+>>>>>>> 6a6d52be97401494c99cdf3b795c9441c7075bf0
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
