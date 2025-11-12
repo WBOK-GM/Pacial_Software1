@@ -21,7 +21,7 @@ export const OrderHistory: React.FC = () => {
     };
 
     cargarHistorial();
-  }, [obtenerHistorial]);
+  }, []);
 
   const getEstadoBadgeVariant = (estado: EstadoPedido): "default" | "secondary" | "destructive" | "outline" => {
     switch (estado) {
