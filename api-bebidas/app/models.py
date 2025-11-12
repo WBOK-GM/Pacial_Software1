@@ -3,6 +3,13 @@
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 
+def strict_bool(value):
+    """Validador estricto: solo acepta True/False o None."""
+    if value is None:
+        return value
+    if isinstance(value, bool):
+        return value
+    raise ValueError("El campo 'available' debe ser booleano (True/False) y no admite strings.")
 
 class BebidaBase(BaseModel):
     """Modelo base para una bebida."""
@@ -17,7 +24,6 @@ class BebidaBase(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, value: str) -> str:
-        """Validar que el nombre no esté vacío y no tenga solo espacios."""
         if not value or not value.strip():
             raise ValueError("El nombre no puede estar vacío")
         return value.strip()
@@ -25,19 +31,20 @@ class BebidaBase(BaseModel):
     @field_validator("price")
     @classmethod
     def validate_price(cls, value: float) -> float:
-        """Validar que el precio sea positivo."""
         if value <= 0:
             raise ValueError("El precio debe ser mayor a 0")
-        # Redondear a 2 decimales
         return round(value, 2)
 
+    @field_validator("available")
+    @classmethod
+    def validate_available(cls, value):
+        return strict_bool(value)
 
 class Bebida(BebidaBase):
     """Modelo completo de una bebida."""
 
-    class Config:
-        """Configuración del modelo."""
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "name": "Café Americano",
                 "description": "Café negro suave y aromático",
@@ -45,7 +52,7 @@ class Bebida(BebidaBase):
                 "available": True,
             }
         }
-
+    }
 
 class BebidaUpdate(BaseModel):
     """Modelo para actualizar una bebida (todos los campos opcionales)."""
@@ -58,7 +65,6 @@ class BebidaUpdate(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, value: Optional[str]) -> Optional[str]:
-        """Validar que el nombre no esté vacío si se proporciona."""
         if value is not None and (not value or not value.strip()):
             raise ValueError("El nombre no puede estar vacío")
         return value.strip() if value else None
@@ -66,9 +72,13 @@ class BebidaUpdate(BaseModel):
     @field_validator("price")
     @classmethod
     def validate_price(cls, value: Optional[float]) -> Optional[float]:
-        """Validar que el precio sea positivo si se proporciona."""
         if value is not None:
             if value <= 0:
                 raise ValueError("El precio debe ser mayor a 0")
             return round(value, 2)
         return None
+
+    @field_validator("available")
+    @classmethod
+    def validate_available(cls, value: Optional[bool]):
+        return strict_bool(value)
