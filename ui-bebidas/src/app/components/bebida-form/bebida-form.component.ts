@@ -1,17 +1,23 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { Bebida } from '../../models/bebida.model';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-bebida-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './bebida-form.component.html',
   styleUrls: ['./bebida-form.component.css']
 })
 export class BebidaFormComponent {
-  nuevaBebida: Bebida = { id: 0, nombre: '', descripcion: '', precio: 0, disponible: true };
-  @Output() agregar = new EventEmitter<Bebida>();
+  nuevaBebida = {
+    nombre: '',
+    descripcion: '',
+    precio: 0,
+    disponible: true
+  };
 
   onSubmit() {
-    this.agregar.emit(this.nuevaBebida);
-    this.nuevaBebida = { id: 0, nombre: '', descripcion: '', precio: 0, disponible: true };
+    console.log('Bebida enviada:', this.nuevaBebida);
   }
 }

@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
+import { BebidaListComponent } from '../../components/bebida-list/bebida-list.component';
 
 @Component({
   selector: 'app-menu-page',
-  template: `<h2>Menú de Bebidas</h2>
-    <app-bebida-list></app-bebida-list>`
+  standalone: true,
+  imports: [BebidaListComponent],
+  template: `
+    <h1>Menú</h1>
+    <app-bebida-list></app-bebida-list>
+  `
 })
 export class MenuPageComponent {}

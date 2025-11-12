@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { Bebida } from '../../models/bebida.model';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-bebida-card',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe],
   templateUrl: './bebida-card.component.html',
   styleUrls: ['./bebida-card.component.css']
 })
 export class BebidaCardComponent {
-  @Input() bebida!: Bebida;
+  @Input() bebida: any;
 }
