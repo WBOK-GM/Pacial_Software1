@@ -1,0 +1,6 @@
+<div class="bebida-card">
+  <h3>{{ bebida.nombre }}</h3>
+  <p>{{ bebida.descripcion }}</p>
+  <span>Precio: {{ bebida.precio | currency }}</span>
+  <span *ngIf="!bebida.disponible">No disponible</span>
+</div>
