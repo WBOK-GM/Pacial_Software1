@@ -8,6 +8,7 @@ import com.virtualcoffee.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class OrderController {
 
     // POST /orders: crear pedido
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid CreateOrderRequest request) {
         try {
             Order order = orderService.createOrder(request.getCustomerName(), request.getItems());
             double total = orderService.calculateTotal(order);
