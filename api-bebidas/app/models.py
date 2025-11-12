@@ -3,14 +3,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 
-def strict_bool(value):
-    """Validador estricto: solo acepta True/False o None."""
-    if value is None:
-        return value
-    if isinstance(value, bool):
-        return value
-    raise ValueError("El campo 'available' debe ser booleano (True/False) y no admite strings.")
-
 class BebidaBase(BaseModel):
     """Modelo base para una bebida."""
 
@@ -35,10 +27,15 @@ class BebidaBase(BaseModel):
             raise ValueError("El precio debe ser mayor a 0")
         return round(value, 2)
 
-    @field_validator("available")
+    @field_validator("available", mode='before')
     @classmethod
     def validate_available(cls, value):
-        return strict_bool(value)
+        """Validador estricto: solo acepta True/False."""
+        if value is None:
+            return True  # default
+        if isinstance(value, bool):
+            return value
+        raise ValueError("El campo 'available' debe ser booleano (True/False) y no admite strings.")
 
 class Bebida(BebidaBase):
     """Modelo completo de una bebida."""
@@ -78,7 +75,12 @@ class BebidaUpdate(BaseModel):
             return round(value, 2)
         return None
 
-    @field_validator("available")
+    @field_validator("available", mode='before')
     @classmethod
     def validate_available(cls, value: Optional[bool]):
-        return strict_bool(value)
+        """Validador estricto: solo acepta True/False o None."""
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            return value
+        raise ValueError("El campo 'available' debe ser booleano (True/False) y no admite strings.")
