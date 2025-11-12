@@ -8,7 +8,7 @@ import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { ShoppingCart, Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Bebida } from '../types';
+import { type Bebida } from '../types';
 
 interface CarritoItem extends Bebida {
   cantidad: number;

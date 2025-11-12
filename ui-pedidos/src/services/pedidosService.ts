@@ -1,5 +1,5 @@
 import api from './api';
-import { PedidoData, Pedido, HistorialResponse } from '../types';
+import type { PedidoData, Pedido, HistorialResponse } from '../types';
 
 // Datos de ejemplo para desarrollo
 const HISTORIAL_MOCK: HistorialResponse = [

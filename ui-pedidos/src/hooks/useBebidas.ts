@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getBebidas } from '../services/bebidasService';
-import { Bebida } from '../types';
+import { type Bebida } from '../types';
 
 interface UseBedidasReturn {
   bebidas: Bebida[];

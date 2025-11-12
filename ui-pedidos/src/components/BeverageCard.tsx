@@ -3,7 +3,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Plus, Coffee, Droplet, Wine, Milk } from "lucide-react";
-import { Bebida } from "../types";
+import { type Bebida } from "../types";
 
 interface BeverageCardProps {
   bebida: Bebida;

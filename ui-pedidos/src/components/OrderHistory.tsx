@@ -4,7 +4,7 @@ import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { Calendar, Package, Loader2 } from 'lucide-react';
-import { Pedido, EstadoPedido } from '../types';
+import type { Pedido, EstadoPedido } from '../types';
 
 export const OrderHistory: React.FC = () => {
   const { obtenerHistorial, loading } = usePedidos();

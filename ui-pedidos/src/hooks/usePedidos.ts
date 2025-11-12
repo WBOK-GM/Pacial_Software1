@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createPedido, getHistorialPedidos } from '../services/pedidosService';
-import { PedidoData, Pedido } from '../types';
+import type { PedidoData, Pedido } from '../types';
 
 interface UsePedidosReturn {
   realizarPedido: (pedido: PedidoData) => Promise<Pedido>;

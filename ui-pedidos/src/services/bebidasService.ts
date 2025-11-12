@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BebidasResponse } from '../types';
+import {type  BebidasResponse } from '../types';
 
 // Datos de ejemplo para desarrollo
 const BEBIDAS_MOCK: BebidasResponse = [
