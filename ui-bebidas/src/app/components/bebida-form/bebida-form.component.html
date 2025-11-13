@@ -1,7 +1,9 @@
 <form (ngSubmit)="onSubmit()">
-  <input type="text" [(ngModel)]="nuevaBebida.nombre" name="nombre" placeholder="Nombre" required />
-  <input type="text" [(ngModel)]="nuevaBebida.descripcion" name="descripcion" placeholder="Descripción" />
-  <input type="number" [(ngModel)]="nuevaBebida.precio" name="precio" placeholder="Precio" required />
-  <label><input type="checkbox" [(ngModel)]="nuevaBebida.disponible" name="disponible" /> Disponible</label>
+  <input type="text" [(ngModel)]="nuevaBebida.name" name="name" placeholder="Nombre" required />
+  <input type="text" [(ngModel)]="nuevaBebida.description" name="description" placeholder="Descripción" />
+  <input type="number" [(ngModel)]="nuevaBebida.price" name="price" placeholder="Precio" required />
+  <label>
+    <input type="checkbox" [(ngModel)]="nuevaBebida.available" name="available" /> Disponible
+  </label>
   <button type="submit">Agregar</button>
 </form>

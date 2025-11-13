@@ -11,21 +11,21 @@ import { Bebida } from '../../models/bebida.model';
 })
 export class BebidaCardComponent {
   @Input() bebida!: Bebida;
-  @Output() onDelete = new EventEmitter<number>();
+  @Output() onDelete = new EventEmitter<string>(); // ✅ debe ser string, no number
 
   getIcon(): string {
-    const nombre = this.bebida.nombre.toLowerCase();
-    
-    if (nombre.includes('café') || nombre.includes('americano')) return '☕';
-    if (nombre.includes('cappuccino')) return '☕';
-    if (nombre.includes('té') || nombre.includes('verde')) return '🍵';
-    if (nombre.includes('jugo') || nombre.includes('naranja')) return '🥤';
-    if (nombre.includes('smoothie') || nombre.includes('fresa')) return '🥤';
+    const name = this.bebida.name.toLowerCase(); // ✅ nombre → name
+
+    if (name.includes('café') || name.includes('americano')) return '☕';
+    if (name.includes('cappuccino')) return '☕';
+    if (name.includes('té') || name.includes('verde')) return '🍵';
+    if (name.includes('jugo') || name.includes('naranja')) return '🥤';
+    if (name.includes('smoothie') || name.includes('fresa')) return '🥤';
     
     return '🥤'; // Icono por defecto
   }
 
   onDeleteClick(): void {
-    this.onDelete.emit(this.bebida.id);
+    this.onDelete.emit(this.bebida.name); // ✅ emitir string
   }
 }

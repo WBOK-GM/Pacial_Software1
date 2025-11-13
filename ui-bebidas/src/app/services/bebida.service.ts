@@ -7,7 +7,7 @@ import { Bebida } from '../models/bebida.model';
   providedIn: 'root'
 })
 export class BebidaService {
-  private apiUrl = 'http://localhost:8080/api/bebidas'; // Ajusta según tu backend
+  private apiUrl = 'http://localhost:8000/menu'; // ✅ API de bebidas FastAPI
 
   constructor(private http: HttpClient) {}
 
@@ -15,19 +15,19 @@ export class BebidaService {
     return this.http.get<Bebida[]>(this.apiUrl);
   }
 
-  getBebida(id: number): Observable<Bebida> {
-    return this.http.get<Bebida>(`${this.apiUrl}/${id}`);
+  getBebida(nombre: string): Observable<Bebida> {
+    return this.http.get<Bebida>(`${this.apiUrl}/${nombre}`);
   }
 
   createBebida(bebida: Bebida): Observable<Bebida> {
     return this.http.post<Bebida>(this.apiUrl, bebida);
   }
 
-  updateBebida(id: number, bebida: Bebida): Observable<Bebida> {
-    return this.http.put<Bebida>(`${this.apiUrl}/${id}`, bebida);
+  updateBebida(nombre: string, bebida: Partial<Bebida>): Observable<Bebida> {
+    return this.http.put<Bebida>(`${this.apiUrl}/${nombre}`, bebida);
   }
 
-  deleteBebida(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteBebida(nombre: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${nombre}`);
   }
 }
