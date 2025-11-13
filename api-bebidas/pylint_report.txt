@@ -1,0 +1,8 @@
+************* Module app.database
+app/database.py:51:26: E1101: Instance of 'FieldInfo' has no 'lower' member (no-member)
+************* Module app.models
+app/models.py:16:0: C0301: Line too long (105/100) (line-too-long)
+
+-----------------------------------
+Your code has been rated at 9.54/10
+

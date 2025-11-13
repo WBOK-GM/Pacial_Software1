@@ -1,0 +1,9 @@
+Name              Stmts   Miss  Cover
+-------------------------------------
+app/__init__.py       1      0   100%
+app/database.py      41      0   100%
+app/main.py          13      0   100%
+app/models.py        60      9    85%
+app/routes.py        34      0   100%
+-------------------------------------
+TOTAL               149      9    94%
