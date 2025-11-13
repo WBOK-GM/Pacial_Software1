@@ -10,10 +10,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Configurar CORS para permitir peticiones desde las UIs
+# Configurar CORS para permitir peticiones desde la UI React en localhost:5173
+origins = [
+    "http://localhost:5173",  # Cambia aquí al origen real de tu frontend
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, especificar dominios específicos
+    allow_origins=origins,  # Mejor especificar explícitamente para producción
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,7 +25,6 @@ app.add_middleware(
 
 # Incluir rutas
 app.include_router(router)
-
 
 @app.get("/")
 async def root():
@@ -31,7 +34,6 @@ async def root():
         "version": "1.0.0",
         "docs": "/docs",
     }
-
 
 @app.get("/health")
 async def health_check():

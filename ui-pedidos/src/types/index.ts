@@ -6,7 +6,7 @@ export interface Bebida {
   description?: string;    // Opcional en FastAPI
   price: number;           // float positivo
   available: boolean;      // true / false
-  categoria?: string;   // Opcional porque no viene del backend
+  categoria?: string;      // Opcional porque no viene del backend
   stock?: number; 
 }
 
@@ -14,8 +14,8 @@ export type BebidasResponse = Bebida[];
 
 // --- PEDIDOS ---
 export interface PedidoItem {
-  bebidaNombre: string;    // referencia por nombre
-  cantidad: number;
+  bebidaName: string;    // referencia por nombre, coincide con backend
+  quantity: number;
 }
 
 export interface PedidoData {
@@ -30,7 +30,7 @@ export interface Pedido {
   customerName: string;
   items: PedidoItem[];
   total: number;
-  orderDate: string;
+  createdAt: string;   // fecha de creación del pedido
   status: EstadoPedido;
 }
 

@@ -25,28 +25,29 @@ export const OrderHistory: React.FC = () => {
 
   const getEstadoBadgeVariant = (estado: EstadoPedido): "default" | "secondary" | "destructive" | "outline" => {
     switch (estado) {
-      case 'COMPLETADO':
-      case 'ENTREGADO':
-      case 'LISTO':
+      case 'DELIVERED':
         return 'default';
-      case 'PENDIENTE':
-      case 'PREPARANDO':
+      case 'PENDING':
         return 'secondary';
-      case 'CANCELADO':
+      case 'CANCELLED':
         return 'destructive';
       default:
         return 'outline';
     }
   };
 
-  const formatearFecha = (fecha: string): string => {
-    return new Date(fecha).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatearFecha = (fecha?: string): string => {
+    if (!fecha) return "Sin fecha";
+    const parsed = new Date(fecha.includes(' ') ? fecha.replace(' ', 'T') : fecha);
+    return !isNaN(parsed.valueOf())
+      ? parsed.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+      : "Sin fecha";
   };
 
   if (loading) {
@@ -79,8 +80,8 @@ export const OrderHistory: React.FC = () => {
       ) : (
         <div className="grid gap-6">
           {historial.map((pedido, index) => (
-            <Card 
-              key={pedido.id} 
+            <Card
+              key={pedido.id}
               className="p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -94,13 +95,13 @@ export const OrderHistory: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <h3>Pedido #{pedido.id}</h3>
-                        <Badge variant={getEstadoBadgeVariant(pedido.estado)} className="shadow-md">
-                          {pedido.estado}
+                        <Badge variant={getEstadoBadgeVariant(pedido.status)} className="shadow-md">
+                          {pedido.status}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="size-4" />
-                        <span>{formatearFecha(pedido.fecha)}</span>
+                        <span>{formatearFecha(pedido.createdAt)}</span>
                       </div>
                     </div>
                   </div>
@@ -109,24 +110,30 @@ export const OrderHistory: React.FC = () => {
 
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">Productos:</p>
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Package className="size-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{pedido.bebidaNombre}</p>
-                        <p className="text-sm text-muted-foreground">Cantidad: {pedido.cantidad}</p>
-                      </div>
-                    </div>
+                    {pedido.items && pedido.items.length > 0 ? (
+                      pedido.items.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                          <div className="p-2 bg-primary/10 rounded-lg">
+                            <Package className="size-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium">{item.bebidaName}</p>
+                            <p className="text-sm text-muted-foreground">Cantidad: {item.quantity}</p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-muted-foreground">Sin productos</div>
+                    )}
                   </div>
                 </div>
-                
+
                 {/* Total */}
                 <div className="lg:text-right">
                   <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20">
                     <p className="text-sm text-muted-foreground mb-2">Total Pagado</p>
                     <p className="text-3xl font-semibold text-primary">
-                      ${pedido.total.toFixed(2)}
+                      ${pedido.total?.toFixed(2) ?? '0.00'}
                     </p>
                   </div>
                 </div>

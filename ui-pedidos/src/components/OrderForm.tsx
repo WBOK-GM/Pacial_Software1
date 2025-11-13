@@ -8,7 +8,7 @@ import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { ShoppingCart, Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { type Bebida, type PedidoData } from '../types';
+import { type Bebida } from '../types';
 
 interface CarritoItem extends Bebida {
   cantidad: number;
@@ -18,7 +18,6 @@ export const OrderForm: React.FC = () => {
   const { bebidas, loading: loadingBebidas } = useBebidas();
   const { realizarPedido, loading: loadingPedido } = usePedidos();
   const [carrito, setCarrito] = useState<CarritoItem[]>([]);
-  const [nombreCliente, setNombreCliente] = useState<string>('');
 
   const agregarAlCarrito = (bebida: Bebida): void => {
     const itemExistente = carrito.find(item => item.name === bebida.name);
@@ -64,29 +63,22 @@ export const OrderForm: React.FC = () => {
       return;
     }
 
-    if (!nombreCliente.trim()) {
-      toast.error('Por favor ingresa tu nombre');
-      return;
-    }
-
     try {
-      // Construir el pedidoData según el backend Spring Boot
-      const pedidoData: PedidoData = {
-        customerName: nombreCliente.trim(),
-        items: carrito.map(item => ({
-          bebidaNombre: item.name,
-          cantidad: item.cantidad
-        }))
-        // NO incluir total - el backend lo calcula
-      };
+      const pedidoData = {
+      customerName: "NombreCliente",
+      items: carrito.map(item => ({
+      bebidaName: item.name,      // Cambia bebidaNombre por bebidaName
+      quantity: item.cantidad,    // Cambia cantidad por quantity
+      unitPrice: item.price
+      })),
+      total: calcularTotal(),
+    };
 
       await realizarPedido(pedidoData);
       toast.success('¡Pedido realizado con éxito!');
       setCarrito([]);
-      setNombreCliente('');
     } catch (error) {
       toast.error('Error al realizar el pedido');
-      console.error(error);
     }
   };
 
@@ -148,21 +140,6 @@ export const OrderForm: React.FC = () => {
               </div>
             ) : (
               <>
-                {/* Campo de nombre del cliente */}
-                <div className="mb-6">
-                  <label htmlFor="nombreCliente" className="block text-sm font-medium mb-2">
-                    Nombre del cliente
-                  </label>
-                  <input
-                    id="nombreCliente"
-                    type="text"
-                    value={nombreCliente}
-                    onChange={(e) => setNombreCliente(e.target.value)}
-                    placeholder="Ingresa tu nombre"
-                    className="w-full px-4 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-
                 <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-2">
                   {carrito.map(item => (
                     <div key={item.name} className="p-4 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
@@ -224,7 +201,7 @@ export const OrderForm: React.FC = () => {
                   <Button 
                     className="w-full h-12 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-base" 
                     onClick={handleRealizarPedido}
-                    disabled={loadingPedido || !nombreCliente.trim()}
+                    disabled={loadingPedido}
                   >
                     {loadingPedido ? (
                       <>
