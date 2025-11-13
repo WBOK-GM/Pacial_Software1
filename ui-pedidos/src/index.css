@@ -116,13 +116,6 @@
     padding: 0;
   }
 
-  ::file-selector-button {
-    box-sizing: border-box;
-    border: 0 solid;
-    margin: 0;
-    padding: 0;
-  }
-
   html, :host {
     -webkit-text-size-adjust: 100%;
     tab-size: 4;
@@ -155,7 +148,6 @@
 
   a {
     color: inherit;
-    -webkit-text-decoration: inherit;
     -webkit-text-decoration: inherit;
     text-decoration: inherit;
   }
@@ -242,6 +234,12 @@
     opacity: 1;
     background-color: #0000;
     border-radius: 0;
+    margin-inline-end: 4px;
+    appearance: button;
+    box-sizing: border-box;
+    border: 0 solid;
+    margin: 0;
+    padding: 0;
   }
 
   :where(select:is([multiple], [size])) optgroup {
@@ -252,9 +250,7 @@
     padding-inline-start: 20px;
   }
 
-  ::file-selector-button {
-    margin-inline-end: 4px;
-  }
+ 
 
   ::placeholder {
     opacity: 1;
@@ -329,10 +325,6 @@
   }
 
   button, input:where([type="button"], [type="reset"], [type="submit"]) {
-    appearance: button;
-  }
-
-  ::file-selector-button {
     appearance: button;
   }
 
