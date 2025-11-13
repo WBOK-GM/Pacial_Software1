@@ -1,38 +1,42 @@
+// src/types/index.ts
+
+// --- BEBIDAS ---
 export interface Bebida {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  categoria: string;
-  stock: number;
-  imagen?: string;
+  name: string;            // Identificador único (clave en la BD)
+  description?: string;    // Opcional en FastAPI
+  price: number;           // float positivo
+  available: boolean;      // true / false
+  categoria?: string;   // Opcional porque no viene del backend
+  stock?: number; 
 }
 
 export type BebidasResponse = Bebida[];
 
+// --- PEDIDOS ---
 export interface PedidoItem {
-  bebidaId: number;
+  bebidaNombre: string;    // referencia por nombre
   cantidad: number;
 }
 
 export interface PedidoData {
   items: PedidoItem[];
-  total: number;
+  customerName: string;    // nombre del cliente, para crear pedido
 }
+
+export type EstadoPedido = 'PENDING' | 'DELIVERED' | 'CANCELLED';
 
 export interface Pedido {
   id: number;
-  bebidaNombre: string;
-  cantidad: number;
+  customerName: string;
+  items: PedidoItem[];
   total: number;
-  fecha: string;
-  estado: EstadoPedido;
+  orderDate: string;
+  status: EstadoPedido;
 }
-
-export type EstadoPedido = 'PENDIENTE' | 'PREPARANDO' | 'COMPLETADO' | 'CANCELADO' | 'ENTREGADO' | 'LISTO';
 
 export type HistorialResponse = Pedido[];
 
+// --- API HELPERS ---
 export interface ApiError {
   message: string;
   status: number;
@@ -44,8 +48,3 @@ export interface ApiResponse<T> {
   status: number;
   message?: string;
 }
-
-export type Categoria = 'cafe' | 'te' | 'jugo' | 'smoothie' | 'refresco' | 'agua';
-export type CategoriasResponse = Categoria[];
-
-

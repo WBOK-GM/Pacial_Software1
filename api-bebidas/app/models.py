@@ -3,6 +3,7 @@
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 
+
 class BebidaBase(BaseModel):
     """Modelo base para una bebida."""
 
@@ -12,6 +13,8 @@ class BebidaBase(BaseModel):
     )
     price: float = Field(..., gt=0, description="Precio de la bebida (debe ser mayor a 0)")
     available: bool = Field(default=True, description="Disponibilidad de la bebida")
+    category: Optional[str] = Field(None, max_length=50, description="Categoría de la bebida (opcional)")
+    stock: Optional[int] = Field(0, ge=0, description="Cantidad en stock (opcional)")
 
     @field_validator("name")
     @classmethod
@@ -37,6 +40,7 @@ class BebidaBase(BaseModel):
             return value
         raise ValueError("El campo 'available' debe ser booleano (True/False) y no admite strings.")
 
+
 class Bebida(BebidaBase):
     """Modelo completo de una bebida."""
 
@@ -47,9 +51,12 @@ class Bebida(BebidaBase):
                 "description": "Café negro suave y aromático",
                 "price": 2.50,
                 "available": True,
+                "category": "cafe",
+                "stock": 20,
             }
         }
     }
+
 
 class BebidaUpdate(BaseModel):
     """Modelo para actualizar una bebida (todos los campos opcionales)."""
@@ -58,6 +65,8 @@ class BebidaUpdate(BaseModel):
     description: Optional[str] = Field(None, max_length=200)
     price: Optional[float] = Field(None, gt=0)
     available: Optional[bool] = None
+    category: Optional[str] = Field(None, max_length=50)
+    stock: Optional[int] = Field(None, ge=0)
 
     @field_validator("name")
     @classmethod

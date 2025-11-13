@@ -15,10 +15,13 @@ export class BebidaFormComponent {
     name: '',
     description: '',
     price: 0,
-    available: true
+    available: true,
+    category: '',
+    stock: 0
   };
 
   onSubmit() {
     console.log('Bebida enviada:', this.nuevaBebida);
+    // Aquí deberías añadir la lógica para enviar esta bebida al backend
   }
 }

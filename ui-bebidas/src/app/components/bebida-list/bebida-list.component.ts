@@ -31,11 +31,11 @@ export class BebidaListComponent implements OnInit {
     });
   }
 
-  deleteBebida(name: string): void {  // ✅ Parámetro: nombre (name) de tipo string
+  deleteBebida(name: string): void {
     if (confirm('¿Estás seguro de eliminar esta bebida?')) {
       this.bebidaService.deleteBebida(name).subscribe({
         next: () => {
-          this.bebidas = this.bebidas.filter(b => b.name !== name);  // ✅ Comparar por name
+          this.bebidas = this.bebidas.filter(b => b.name !== name);
         },
         error: (error) => {
           console.error('Error eliminando bebida:', error);

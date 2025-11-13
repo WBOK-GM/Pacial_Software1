@@ -7,12 +7,10 @@ from app.database import db
 
 router = APIRouter(prefix="/menu", tags=["menu"])
 
-
 @router.get("", response_model=List[Bebida])
 async def get_menu():
     """Obtener todo el menú de bebidas."""
     return db.get_all()
-
 
 @router.get("/{name}", response_model=Bebida)
 async def get_bebida(name: str):
@@ -25,7 +23,6 @@ async def get_bebida(name: str):
         )
     return bebida
 
-
 @router.post("", response_model=Bebida, status_code=status.HTTP_201_CREATED)
 async def add_bebida(bebida: Bebida):
     """Agregar una nueva bebida al menú."""
@@ -36,7 +33,6 @@ async def add_bebida(bebida: Bebida):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         ) from e
-
 
 @router.put("/{name}", response_model=Bebida)
 async def update_bebida(name: str, bebida_update: BebidaUpdate):
@@ -57,7 +53,6 @@ async def update_bebida(name: str, bebida_update: BebidaUpdate):
             detail=f"Bebida '{name}' no encontrada en el menú",
         )
     return bebida
-
 
 @router.delete("/{name}")
 async def delete_bebida(name: str):

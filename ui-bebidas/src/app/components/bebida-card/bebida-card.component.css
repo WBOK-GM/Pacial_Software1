@@ -40,12 +40,12 @@
   gap: 0.25rem;
 }
 
-.badge.disponible {
+.badge.available {
   background-color: #000;
   color: white;
 }
 
-.badge:not(.disponible) {
+.badge:not(.available) {
   background-color: #f3f4f6;
   color: #6b7280;
 }
@@ -61,7 +61,7 @@
   color: #1a1a1a;
 }
 
-.description {
+.description, .category, .stock {
   color: #6b7280;
   font-size: 0.875rem;
   margin: 0 0 1.5rem 0;

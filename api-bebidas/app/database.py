@@ -3,7 +3,6 @@
 from typing import Dict, List, Optional
 from app.models import Bebida
 
-
 class BebidaDatabase:
     """Base de datos en memoria para bebidas."""
 
@@ -20,24 +19,32 @@ class BebidaDatabase:
                 description="Café negro suave y aromático",
                 price=2.50,
                 available=True,
+                category="cafe",
+                stock=20,
             ),
             Bebida(
                 name="Cappuccino",
                 description="Café con espuma de leche cremosa",
                 price=3.50,
                 available=True,
+                category="cafe",
+                stock=15,
             ),
             Bebida(
                 name="Latte",
                 description="Café con leche vaporizada",
                 price=4.00,
                 available=True,
+                category="cafe",
+                stock=5,
             ),
             Bebida(
                 name="Té Verde",
                 description="Té verde natural",
                 price=2.00,
                 available=True,
+                category="te",
+                stock=10,
             ),
         ]
         for bebida in sample_bebidas:
@@ -91,7 +98,6 @@ class BebidaDatabase:
         """Resetear a datos de ejemplo."""
         self.clear()
         self._initialize_sample_data()
-
 
 # Instancia global de la base de datos
 db = BebidaDatabase()

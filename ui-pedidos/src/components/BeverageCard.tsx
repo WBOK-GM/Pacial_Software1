@@ -39,29 +39,31 @@ export const BeverageCard: React.FC<BeverageCardProps> = ({ bebida, onSelect }) 
             {getIconForCategory(bebida.categoria)}
           </div>
           <Badge 
-            variant={bebida.stock > 10 ? "default" : "destructive"}
+            variant={bebida.stock && bebida.stock > 10 ? "default" : "destructive"}
             className="shadow-lg"
           >
-            {bebida.stock > 10 ? '✓ Disponible' : `Solo ${bebida.stock}`}
+            {bebida.stock && bebida.stock > 10 ? '✓ Disponible' : `Solo ${bebida.stock ?? '0'}`}
           </Badge>
         </div>
 
         {/* Contenido */}
         <div className="space-y-2">
-          <h3 className="group-hover:text-primary transition-colors">{bebida.nombre}</h3>
-          <p className="text-muted-foreground text-sm line-clamp-2">{bebida.descripcion}</p>
+          <h3 className="group-hover:text-primary transition-colors">{bebida.name}</h3>
+          <p className="text-muted-foreground text-sm line-clamp-2">{bebida.description}</p>
         </div>
         
         {/* Footer */}
         <div className="flex justify-between items-center pt-2 border-t">
           <div>
             <p className="text-xs text-muted-foreground">Precio</p>
-            <span className="text-primary text-xl font-semibold">${bebida.precio.toFixed(2)}</span>
+            <span className="text-primary text-xl font-semibold">
+              ${bebida.price !== undefined ? bebida.price.toFixed(2) : 'N/D'}
+            </span>
           </div>
           <Button 
             size="lg" 
             onClick={() => onSelect(bebida)}
-            disabled={bebida.stock === 0}
+            disabled={!bebida.stock || bebida.stock === 0}
             className="rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
           >
             <Plus className="size-5 mr-1" />

@@ -8,7 +8,7 @@ import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { ShoppingCart, Trash2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { type Bebida } from '../types';
+import { type Bebida, type PedidoData } from '../types';
 
 interface CarritoItem extends Bebida {
   cantidad: number;
@@ -18,53 +18,44 @@ export const OrderForm: React.FC = () => {
   const { bebidas, loading: loadingBebidas } = useBebidas();
   const { realizarPedido, loading: loadingPedido } = usePedidos();
   const [carrito, setCarrito] = useState<CarritoItem[]>([]);
+  const [nombreCliente, setNombreCliente] = useState<string>('');
 
   const agregarAlCarrito = (bebida: Bebida): void => {
-    const itemExistente = carrito.find(item => item.id === bebida.id);
+    const itemExistente = carrito.find(item => item.name === bebida.name);
     
     if (itemExistente) {
-      if (itemExistente.cantidad < bebida.stock) {
-        setCarrito(carrito.map(item =>
-          item.id === bebida.id
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
-        ));
-        toast.success(`${bebida.nombre} agregado al carrito`);
-      } else {
-        toast.error('No hay suficiente stock disponible');
-      }
+      setCarrito(carrito.map(item =>
+        item.name === bebida.name
+          ? { ...item, cantidad: item.cantidad + 1 }
+          : item
+      ));
+      toast.success(`${bebida.name} agregado al carrito`);
     } else {
       setCarrito([...carrito, { ...bebida, cantidad: 1 }]);
-      toast.success(`${bebida.nombre} agregado al carrito`);
+      toast.success(`${bebida.name} agregado al carrito`);
     }
   };
 
-  const eliminarDelCarrito = (bebidaId: number): void => {
-    setCarrito(carrito.filter(item => item.id !== bebidaId));
+  const eliminarDelCarrito = (name: string): void => {
+    setCarrito(carrito.filter(item => item.name !== name));
     toast.info('Producto eliminado del carrito');
   };
 
-  const actualizarCantidad = (bebidaId: number, nuevaCantidad: number): void => {
+  const actualizarCantidad = (name: string, nuevaCantidad: number): void => {
     if (nuevaCantidad <= 0) {
-      eliminarDelCarrito(bebidaId);
-      return;
-    }
-
-    const bebida = bebidas.find(b => b.id === bebidaId);
-    if (bebida && nuevaCantidad > bebida.stock) {
-      toast.error('No hay suficiente stock disponible');
+      eliminarDelCarrito(name);
       return;
     }
 
     setCarrito(carrito.map(item =>
-      item.id === bebidaId
+      item.name === name
         ? { ...item, cantidad: nuevaCantidad }
         : item
     ));
   };
 
   const calcularTotal = (): number => {
-    return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+    return carrito.reduce((total, item) => total + (item.price * item.cantidad), 0);
   };
 
   const handleRealizarPedido = async (): Promise<void> => {
@@ -73,20 +64,29 @@ export const OrderForm: React.FC = () => {
       return;
     }
 
+    if (!nombreCliente.trim()) {
+      toast.error('Por favor ingresa tu nombre');
+      return;
+    }
+
     try {
-      const pedidoData = {
+      // Construir el pedidoData según el backend Spring Boot
+      const pedidoData: PedidoData = {
+        customerName: nombreCliente.trim(),
         items: carrito.map(item => ({
-          bebidaId: item.id,
+          bebidaNombre: item.name,
           cantidad: item.cantidad
-        })),
-        total: calcularTotal()
+        }))
+        // NO incluir total - el backend lo calcula
       };
 
       await realizarPedido(pedidoData);
       toast.success('¡Pedido realizado con éxito!');
       setCarrito([]);
+      setNombreCliente('');
     } catch (error) {
       toast.error('Error al realizar el pedido');
+      console.error(error);
     }
   };
 
@@ -109,7 +109,7 @@ export const OrderForm: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {bebidas.map(bebida => (
             <BeverageCard
-              key={bebida.id}
+              key={bebida.name}
               bebida={bebida}
               onSelect={agregarAlCarrito}
             />
@@ -148,21 +148,36 @@ export const OrderForm: React.FC = () => {
               </div>
             ) : (
               <>
+                {/* Campo de nombre del cliente */}
+                <div className="mb-6">
+                  <label htmlFor="nombreCliente" className="block text-sm font-medium mb-2">
+                    Nombre del cliente
+                  </label>
+                  <input
+                    id="nombreCliente"
+                    type="text"
+                    value={nombreCliente}
+                    onChange={(e) => setNombreCliente(e.target.value)}
+                    placeholder="Ingresa tu nombre"
+                    className="w-full px-4 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
                 <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-2">
                   {carrito.map(item => (
-                    <div key={item.id} className="p-4 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+                    <div key={item.name} className="p-4 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
                       <div className="flex items-start gap-3 mb-3">
                         <div className="flex-1">
-                          <p className="font-medium">{item.nombre}</p>
+                          <p className="font-medium">{item.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            ${item.precio.toFixed(2)} c/u
+                            ${item.price ? item.price.toFixed(2) : 'N/D'} c/u
                           </p>
                         </div>
                         <Button
                           size="sm"
                           variant="ghost"
                           className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                          onClick={() => eliminarDelCarrito(item.id)}
+                          onClick={() => eliminarDelCarrito(item.name)}
                         >
                           <Trash2 className="size-4" />
                         </Button>
@@ -174,7 +189,7 @@ export const OrderForm: React.FC = () => {
                             size="sm"
                             variant="outline"
                             className="h-8 w-8 p-0 rounded-lg"
-                            onClick={() => actualizarCantidad(item.id, item.cantidad - 1)}
+                            onClick={() => actualizarCantidad(item.name, item.cantidad - 1)}
                           >
                             -
                           </Button>
@@ -183,13 +198,13 @@ export const OrderForm: React.FC = () => {
                             size="sm"
                             variant="outline"
                             className="h-8 w-8 p-0 rounded-lg"
-                            onClick={() => actualizarCantidad(item.id, item.cantidad + 1)}
+                            onClick={() => actualizarCantidad(item.name, item.cantidad + 1)}
                           >
                             +
                           </Button>
                         </div>
                         <span className="font-semibold text-primary">
-                          ${(item.precio * item.cantidad).toFixed(2)}
+                          ${(item.price * item.cantidad).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -209,7 +224,7 @@ export const OrderForm: React.FC = () => {
                   <Button 
                     className="w-full h-12 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-base" 
                     onClick={handleRealizarPedido}
-                    disabled={loadingPedido}
+                    disabled={loadingPedido || !nombreCliente.trim()}
                   >
                     {loadingPedido ? (
                       <>

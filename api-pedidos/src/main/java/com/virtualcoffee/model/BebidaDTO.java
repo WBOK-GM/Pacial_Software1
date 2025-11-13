@@ -12,4 +12,6 @@ public class BebidaDTO {
     private String description;
     private double price;
     private boolean available;
+    private String category;  
+    private Integer stock;    
 }

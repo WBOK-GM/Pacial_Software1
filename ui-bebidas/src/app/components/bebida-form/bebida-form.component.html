@@ -2,6 +2,8 @@
   <input type="text" [(ngModel)]="nuevaBebida.name" name="name" placeholder="Nombre" required />
   <input type="text" [(ngModel)]="nuevaBebida.description" name="description" placeholder="Descripción" />
   <input type="number" [(ngModel)]="nuevaBebida.price" name="price" placeholder="Precio" required />
+  <input type="text" [(ngModel)]="nuevaBebida.category" name="category" placeholder="Categoría" />
+  <input type="number" [(ngModel)]="nuevaBebida.stock" name="stock" placeholder="Stock" min="0" />
   <label>
     <input type="checkbox" [(ngModel)]="nuevaBebida.available" name="available" /> Disponible
   </label>

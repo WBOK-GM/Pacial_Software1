@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
-import { getBebidas } from '../services/bebidasService';
-import { type Bebida } from '../types';
+import { obtenerBebidas } from '../services/bebidasService';
+import type { Bebida } from '../types';
 
-interface UseBedidasReturn {
+interface UseBebidasReturn {
   bebidas: Bebida[];
   loading: boolean;
   error: string | null;
 }
 
-export const useBebidas = (): UseBedidasReturn => {
+export const useBebidas = (): UseBebidasReturn => {
   const [bebidas, setBebidas] = useState<Bebida[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBebidas = async () => {
       try {
-        const data = await getBebidas();
+        const data = await obtenerBebidas(); // <-- usa el nuevo servicio real
         setBebidas(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error desconocido');

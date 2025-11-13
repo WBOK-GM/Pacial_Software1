@@ -11,10 +11,10 @@ import { Bebida } from '../../models/bebida.model';
 })
 export class BebidaCardComponent {
   @Input() bebida!: Bebida;
-  @Output() onDelete = new EventEmitter<string>(); // ✅ debe ser string, no number
+  @Output() onDelete = new EventEmitter<string>();
 
   getIcon(): string {
-    const name = this.bebida.name.toLowerCase(); // ✅ nombre → name
+    const name = this.bebida.name.toLowerCase();
 
     if (name.includes('café') || name.includes('americano')) return '☕';
     if (name.includes('cappuccino')) return '☕';
@@ -26,6 +26,6 @@ export class BebidaCardComponent {
   }
 
   onDeleteClick(): void {
-    this.onDelete.emit(this.bebida.name); // ✅ emitir string
+    this.onDelete.emit(this.bebida.name);
   }
 }

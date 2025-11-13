@@ -11,6 +11,8 @@
   <div class="card-content">
     <h3>{{ bebida.name }}</h3>
     <p class="description">{{ bebida.description }}</p>
+    <p class="category" *ngIf="bebida.category">Categoría: {{ bebida.category }}</p>
+    <p class="stock" *ngIf="bebida.stock !== undefined">Stock: {{ bebida.stock }}</p>
     
     <div class="card-footer">
       <div class="price-section">
