@@ -12,7 +12,8 @@ app = FastAPI(
 
 # Configurar CORS para permitir peticiones desde la UI React en localhost:5173
 origins = [
-    "http://localhost:5173",  # Cambia aquí al origen real de tu frontend
+    "http://localhost:5173",
+    "http://localhost:4200"  # Cambia aquí al origen real de tu frontend
 ]
 
 app.add_middleware(
